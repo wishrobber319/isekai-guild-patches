@@ -99,20 +99,29 @@ namespace IsekaiGuildPatches
         public static void Postfix(QuestRank rank)
         {
             Quest quest = Find.QuestManager?.QuestsListForReading?.LastOrDefault();
-            if (quest == null || !quest.PartsListForReading.Any(p => p is QuestPart_IsekaiLocalHunt))
+            if (quest == null)
             {
                 return;
+            }
+            QuestPart_IsekaiLocalHunt part = quest.PartsListForReading.OfType<QuestPart_IsekaiLocalHunt>().FirstOrDefault();
+            if (part == null)
+            {
+                return; // not one of our local hunts
             }
 
             int size = PackRules.Roll(rank);
             GuildBountyPackTracker.Get()?.Set(quest.id, size);
-            if (size <= 1)
-            {
-                return; // lone target: leave the title/description as-is
-            }
 
-            quest.name = quest.name + " " + "IsekaiGuildPatches_PackTag".Translate().ToString();
-            quest.description = quest.description + "\n\n" + "IsekaiGuildPatches_PackNote".Translate().ToString();
+            // Retitle to "<Rank>-Rank [(Pack)]: <Target>" - drop the base "[Guild] ... Bounty:" wording and
+            // put the pack marker right after the rank. Overrides whatever name the base built.
+            string target = part.creatureKind != null ? part.creatureKind.LabelCap.ToString() : "creature";
+            string key = size > 1 ? "IsekaiGuildPatches_TitlePack" : "IsekaiGuildPatches_Title";
+            quest.name = key.Translate(rank.ToString(), target);
+
+            if (size > 1)
+            {
+                quest.description = quest.description + "\n\n" + "IsekaiGuildPatches_PackNote".Translate().ToString();
+            }
         }
     }
 }
