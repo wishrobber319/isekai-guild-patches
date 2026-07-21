@@ -6,7 +6,7 @@
     <description>Quality-of-life patches for Isekai RPG Leveling's Adventurer's Guild, bundled into one add-on.
 
 What it does:
-- Every guild listing becomes a local Bounty. The target spawns on your map, hostile and attacking, from a random map edge, instead of at a remote world site or as a creature that just wanders off. Some marks arrive alone, some with a rank-scaled pack.
+- Every guild listing becomes a local Bounty. The target spawns on your map, hostile and attacking, from a random map edge, instead of at a remote world site or as a creature that just wanders off. Some marks arrive alone, some with a rank-scaled pack; kill the mark and the survivors rout and flee the map.
 - Bounties scale to your party's rank. They roll against your colonists' actual ranks (F to SSS) instead of a flat level cap, so a strong party gets tougher targets and a weak one is never overwhelmed.
 - Listings are mirrored into RimWorld's normal Quests tab, so you accept them from home without traveling to the world board, and the vanilla quest-expiry alert is hidden.
 - Cleaner rewards: strips the random weapons, armor, components and drugs, and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.

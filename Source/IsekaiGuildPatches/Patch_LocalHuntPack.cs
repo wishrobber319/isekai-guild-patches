@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using IsekaiLeveling.MobRanking;
 using IsekaiLeveling.Quests;
@@ -9,6 +11,19 @@ using Verse.AI.Group;
 
 namespace IsekaiGuildPatches
 {
+    // Shared state for the pack patches: a reader for the base quest part's private target pawn, and a
+    // weak map from each bounty target -> the assault lord its pack shares. Weak so it never keeps dead
+    // pawns alive; not persisted, so after a mid-fight save/load the flee-on-leader-death simply no-ops
+    // (the pack keeps assaulting, i.e. the pre-flee behaviour) - a harmless degradation.
+    internal static class LocalHuntPackState
+    {
+        internal static readonly AccessTools.FieldRef<QuestPart_IsekaiLocalHunt, Pawn> Target =
+            AccessTools.FieldRefAccess<QuestPart_IsekaiLocalHunt, Pawn>("spawnedCreature");
+
+        internal static readonly ConditionalWeakTable<Pawn, Lord> PackLords =
+            new ConditionalWeakTable<Pawn, Lord>();
+    }
+
     // Give some bounties a PACK, for a mix of pack and single-target fights.
     //
     // The base local hunt spawns exactly ONE target. Here we roll a rank-scaled pack size and spawn
@@ -16,17 +31,13 @@ namespace IsekaiGuildPatches
     // the target's own LordJob_AssaultColony, so the whole pack marches on the colony together.
     //
     // Completion is left to the base mod: it fires on the bounty TARGET's death (the reward is for the
-    // mark), and the rest of the pack is simply the fight around it. Escorts are ordinary pawns in an
-    // ordinary saved lord, so this needs no bookkeeping and survives save/load for free.
+    // mark). Escorts are ordinary pawns in an ordinary saved lord, so this survives save/load for free.
     [HarmonyPatch(typeof(QuestPart_IsekaiLocalHunt), "SpawnCreatureOnMap")]
     public static class Patch_LocalHuntPack
     {
-        private static readonly AccessTools.FieldRef<QuestPart_IsekaiLocalHunt, Pawn> SpawnedCreatureRef =
-            AccessTools.FieldRefAccess<QuestPart_IsekaiLocalHunt, Pawn>("spawnedCreature");
-
         public static void Postfix(QuestPart_IsekaiLocalHunt __instance, Map map)
         {
-            Pawn main = SpawnedCreatureRef(__instance);
+            Pawn main = LocalHuntPackState.Target(__instance);
             if (main == null || !main.Spawned || map == null)
             {
                 return;
@@ -43,6 +54,13 @@ namespace IsekaiGuildPatches
             for (int i = 1; i < packSize; i++)
             {
                 SpawnEscort(__instance.creatureKind, __instance.rank, faction, map, main.Position, lord);
+            }
+
+            // Remember the pack's shared lord so we can rout the survivors when the target dies.
+            if (lord != null)
+            {
+                LocalHuntPackState.PackLords.Remove(main);
+                LocalHuntPackState.PackLords.Add(main, lord);
             }
         }
 
@@ -110,6 +128,48 @@ namespace IsekaiGuildPatches
             }
             GenSpawn.Spawn(p, cell, map, Rot4.Random);
             lord?.AddPawn(p);
+        }
+    }
+
+    // Kill the leader, break the pack: when the bounty target dies, any surviving pack members drop the
+    // assault and sprint off the nearest map edge, like a routed raid. Runs off the base quest part's
+    // own target-death hook (which is also where it completes the quest).
+    [HarmonyPatch(typeof(QuestPart_IsekaiLocalHunt), "Notify_PawnKilled")]
+    public static class Patch_PackFleeOnTargetDeath
+    {
+        public static void Postfix(QuestPart_IsekaiLocalHunt __instance, Pawn pawn)
+        {
+            if (pawn == null || pawn != LocalHuntPackState.Target(__instance))
+            {
+                return; // only when the bounty TARGET (the leader) dies
+            }
+            if (!LocalHuntPackState.PackLords.TryGetValue(pawn, out Lord lord) || lord == null)
+            {
+                return; // lone target, or no pack recorded (e.g. post-load)
+            }
+            LocalHuntPackState.PackLords.Remove(pawn);
+
+            List<Pawn> survivors = new List<Pawn>();
+            foreach (Pawn p in lord.ownedPawns)
+            {
+                if (p != null && p != pawn && !p.Dead && p.Spawned)
+                {
+                    survivors.Add(p);
+                }
+            }
+            if (survivors.Count == 0)
+            {
+                return;
+            }
+
+            Map map = survivors[0].Map;
+            if (map == null)
+            {
+                return;
+            }
+            LordMaker.MakeNewLord(survivors[0].Faction,
+                new LordJob_ExitMapBest(LocomotionUrgency.Sprint, false, true),
+                map, survivors);
         }
     }
 }
