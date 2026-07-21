@@ -43,7 +43,20 @@ namespace IsekaiGuildPatches
                 return;
             }
 
-            int packSize = RollPackSize(__instance.rank);
+            // Use the size decided (and shown in the title) at quest creation; fall back to a fresh roll
+            // only if there's no record (e.g. a non-guild hunt, or a pre-existing quest from before this
+            // update). Consume the record once spawned.
+            int packSize;
+            GuildBountyPackTracker tracker = GuildBountyPackTracker.Get();
+            int questId = __instance.quest?.id ?? -1;
+            if (tracker != null && questId != -1 && tracker.TryGet(questId, out packSize))
+            {
+                tracker.Clear(questId);
+            }
+            else
+            {
+                packSize = PackRules.Roll(__instance.rank);
+            }
             if (packSize <= 1)
             {
                 return; // lone target
@@ -62,31 +75,6 @@ namespace IsekaiGuildPatches
                 LocalHuntPackState.PackLords.Remove(main);
                 LocalHuntPackState.PackLords.Add(main, lord);
             }
-        }
-
-        // A genuine mix: ~35% of bounties come alone at any rank; the rest bring a rank-scaled pack.
-        private static int RollPackSize(QuestRank rank)
-        {
-            if (Rand.Chance(0.35f))
-            {
-                return 1;
-            }
-
-            int b;
-            switch (rank)
-            {
-                case QuestRank.F:
-                case QuestRank.E: b = 2; break;
-                case QuestRank.D:
-                case QuestRank.C: b = 3; break;
-                case QuestRank.B: b = 4; break;
-                case QuestRank.A: b = 6; break;
-                case QuestRank.S: b = 8; break;
-                case QuestRank.SS: b = 10; break;
-                case QuestRank.SSS: b = 12; break;
-                default: b = 2; break;
-            }
-            return Rand.RangeInclusive(Math.Max(2, b - 1), b + 1);
         }
 
         // Spawn one extra pack member: same kind, same hostile faction, rank-scaled/elite like the
