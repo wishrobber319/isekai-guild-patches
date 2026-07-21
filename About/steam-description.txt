@@ -1,10 +1,11 @@
-[b]Three Isekai Adventurer's Guild quality-of-life patches in one mod.[/b] Everything from the separate rank-scaling, vanilla-tab and loot-tweak mods, bundled so you install a single add-on instead of three.
+[b]Turns the Isekai Adventurer's Guild into a clean, local bounty board.[/b] Bundles several quality-of-life patches for Isekai RPG Leveling's guild so you install a single add-on instead of hunting down separate ones.
 
 [hr][/hr]
 [b]What's inside[/b]
 [list]
-[*][b]Quests scale to your party's rank.[/b] Guild board hunts roll against your colonists' actual ranks, from F to SSS, instead of a flat level cap, so a strong party gets tougher, richer hunts and a weak one is never overwhelmed.
-[*][b]Guild hunts in the vanilla Quests tab.[/b] The Guild Faction Add-on's daily listings are mirrored into RimWorld's normal Quests tab, so you browse and accept them from home without traveling to the world board.
-[*][b]Cleaner hunt loot.[/b] Strips the random weapons, armor, components and drugs from hunt rewards and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.
-[*][b]Requires Isekai RPG Leveling[/b] and its Guild Faction Add-on. Replaces the three separate guild mods, so unsubscribe from those to avoid patching anything twice.
+[*][b]Every target is a local Bounty.[/b] Guild listings all become Bounties whose target spawns on your map, hostile and attacking, from a random map edge. No caravanning out to a remote world site, and no factionless creatures that just wander off.
+[*][b]Scaled to your party's rank.[/b] Bounties roll against your colonists' actual ranks, from F to SSS, instead of a flat level cap, so a strong party gets tougher targets and a weak one is never overwhelmed.
+[*][b]Read them in the vanilla Quests tab.[/b] The guild board's daily listings are mirrored into RimWorld's normal Quests tab, so you browse and accept from home without traveling to the world board. The vanilla "quest expires" alert is hidden so the short daily listings stop nagging.
+[*][b]Cleaner rewards.[/b] Strips the random weapons, armor, components and drugs, and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.
+[*][b]Requires Isekai RPG Leveling[/b] and its Guild Faction Add-on.
 [/list]
