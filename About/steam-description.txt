@@ -1,0 +1,10 @@
+[b]Three Isekai Adventurer's Guild quality-of-life patches in one mod.[/b] Everything from the separate rank-scaling, vanilla-tab and loot-tweak mods, bundled so you install a single add-on instead of three.
+
+[hr][/hr]
+[b]What's inside[/b]
+[list]
+[*][b]Quests scale to your party's rank.[/b] Guild board hunts roll against your colonists' actual ranks, from F to SSS, instead of a flat level cap, so a strong party gets tougher, richer hunts and a weak one is never overwhelmed.
+[*][b]Guild hunts in the vanilla Quests tab.[/b] The Guild Faction Add-on's daily listings are mirrored into RimWorld's normal Quests tab, so you browse and accept them from home without traveling to the world board.
+[*][b]Cleaner hunt loot.[/b] Strips the random weapons, armor, components and drugs from hunt rewards and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.
+[*][b]Requires Isekai RPG Leveling[/b] and its Guild Faction Add-on. Replaces the three separate guild mods, so unsubscribe from those to avoid patching anything twice.
+[/list]

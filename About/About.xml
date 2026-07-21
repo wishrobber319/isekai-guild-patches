@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ModMetaData>
+    <packageId>wishRobber.isekaiguildpatches</packageId>
+    <name>Isekai Guild Patches</name>
+    <author>wishRobber</author>
+    <description>Three quality-of-life patches for Isekai RPG Leveling's Adventurer's Guild, rolled into one mod so you install a single add-on instead of three.
+
+What it does:
+- Quests scale to your party's rank. Guild board hunts roll against your colonists' actual ranks (F to SSS) instead of a flat level cap, so a strong party gets tougher, richer hunts and a weak one is never overwhelmed.
+- Guild hunts in the vanilla Quests tab. The Guild Faction Add-on's daily listings are mirrored into RimWorld's normal Quests tab, so you browse and accept them from home without traveling to the world board.
+- Cleaner hunt loot. Strips the random weapons, armor, components and drugs from hunt rewards and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.
+
+Requires Isekai RPG Leveling and its Guild Faction Add-on (plus Harmony). This bundle replaces three separate mods: Isekai Guild Quests Scale to Party Rank, Isekai Guild Quests in Vanilla Tab, and Isekai Guild Quest Loot Tweaks. Unsubscribe from those if you have them, so nothing is patched twice.
+
+A lightweight Harmony patch, no new items or defs, safe to add to or remove from a save at any time.</description>
+    <supportedVersions>
+        <li>1.6</li>
+    </supportedVersions>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+        </li>
+        <li>
+            <packageId>JellyCreative.IsekaiLeveling</packageId>
+            <displayName>ISEKAI RPG LEVELING</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3657580708</steamWorkshopUrl>
+        </li>
+        <li>
+            <packageId>Poupun.GuildFactionAddon</packageId>
+            <displayName>GUILD FACTION ADD-ON - Isekai RPG Leveling</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3718568958</steamWorkshopUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>brrainz.harmony</li>
+        <li>JellyCreative.IsekaiLeveling</li>
+        <li>Poupun.GuildFactionAddon</li>
+    </loadAfter>
+</ModMetaData>
