@@ -3,7 +3,7 @@
 [hr][/hr]
 [b]What's inside[/b]
 [list]
-[*][b]Every target is a local Bounty.[/b] Guild listings all become Bounties whose target spawns on your map, hostile and attacking, from a random map edge. No caravanning out to a remote world site, and no factionless creatures that just wander off.
+[*][b]Every target is a local Bounty.[/b] Guild listings all become Bounties whose target spawns on your map, hostile and attacking, from a random map edge. No caravanning out to a remote world site, and no factionless creatures that just wander off. Some marks come alone, some bring a rank-scaled pack.
 [*][b]Scaled to your party's rank.[/b] Bounties roll against your colonists' actual ranks, from F to SSS, instead of a flat level cap, so a strong party gets tougher targets and a weak one is never overwhelmed.
 [*][b]Read them in the vanilla Quests tab.[/b] The guild board's daily listings are mirrored into RimWorld's normal Quests tab, so you browse and accept from home without traveling to the world board. The vanilla "quest expires" alert is hidden so the short daily listings stop nagging.
 [*][b]Cleaner rewards.[/b] Strips the random weapons, armor, components and drugs, and adds more mana essence, reinforcement cores, rebirth orbs, star fragments and healing potions at higher ranks.
