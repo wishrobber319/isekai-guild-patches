@@ -119,9 +119,10 @@ namespace IsekaiGuildPatches
         }
     }
 
-    // Kill the leader, break the pack: when the bounty target dies, any surviving pack members drop the
-    // assault and sprint off the nearest map edge, like a routed raid. Runs off the base quest part's
-    // own target-death hook (which is also where it completes the quest).
+    // Kill the leader, break the pack: when the bounty target dies, any surviving HUMANLIKE pack members
+    // drop the assault and sprint off the nearest map edge, like a routed war-band. Animal (non-humanlike)
+    // packs do NOT rout - a beast pack that loses its alpha keeps fighting to the death. Runs off the base
+    // quest part's own target-death hook (which is also where it completes the quest).
     [HarmonyPatch(typeof(QuestPart_IsekaiLocalHunt), "Notify_PawnKilled")]
     public static class Patch_PackFleeOnTargetDeath
     {
@@ -136,6 +137,13 @@ namespace IsekaiGuildPatches
                 return; // lone target, or no pack recorded (e.g. post-load)
             }
             LocalHuntPackState.PackLords.Remove(pawn);
+
+            // Animals fight to the death: only humanlike packs rout when their leader falls. The pack is a
+            // single creatureKind, so the dead leader's race is the whole pack's race.
+            if (!pawn.RaceProps.Humanlike)
+            {
+                return;
+            }
 
             List<Pawn> survivors = new List<Pawn>();
             foreach (Pawn p in lord.ownedPawns)
