@@ -4,4 +4,24 @@
     <IsekaiGuildPatches_Title>{0}-Rank: {1}</IsekaiGuildPatches_Title>
     <IsekaiGuildPatches_TitlePack>{0}-Rank: {1} pack</IsekaiGuildPatches_TitlePack>
     <IsekaiGuildPatches_PackNote>This mark does not travel alone. Expect a pack of them.</IsekaiGuildPatches_PackNote>
+
+    <!-- Declutter the hunt quest description. These override the base Isekai keys (we load after Isekai,
+         so ours win): drop the "HUNT CONTRACT" header + the Difficulty block from the template, and blank
+         out the redundant "Awaiting acceptance..." status line and the duplicate "Bonus: XP" line.
+         Template placeholders: {0}=rank, {1}=target, {2}=XP, {3}=silver. -->
+    <Isekai_Quest_Description_Hunt><![CDATA[Target: {1} ({0}-Rank)
+
+Mission Briefing:
+A creature has been reported in the area. The Guild is offering a bounty for its elimination.
+
+Upon Completion:
+• {2} XP distributed among all hunters
+• {3} Silver bounty payment
+• Additional loot from the creature
+
+Accept this contract to summon the target to your hunting grounds.
+
+<color=#666666>— Adventurer's Guild</color>]]></Isekai_Quest_Description_Hunt>
+    <Isekai_Quest_Local_Pending></Isekai_Quest_Local_Pending>
+    <Isekai_Quest_XPReward></Isekai_Quest_XPReward>
 </LanguageData>
