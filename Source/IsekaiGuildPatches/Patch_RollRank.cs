@@ -10,10 +10,11 @@ using Verse;
 namespace GuildQuestRankRange
 {
     // The guild board picks each daily quest's rank via GuildQuestBoardWorldComponent.RollRank
-    // (a level-capped weighted roll). We replace the [F..cap] bound with the party's own range
-    // [lowestColonistRank - 1, highestColonistRank + 1], keep the add-on's original weighting
-    // (lower ranks common, ranks C+ skewed up by guild goodwill), and honor Isekai's
-    // "Minimum Quest Rank" setting as a floor.
+    // (a level-capped weighted roll). We replace the [F..cap] bound with a band tied to the party:
+    // floor = the party's AVERAGE rank (so a single low-level recruit can't drag the whole board down
+    // to F), ceiling = the strongest colonist's rank + 1 (a stretch challenge). We keep the add-on's
+    // original weighting (lower ranks common, ranks C+ skewed up by guild goodwill) and honor Isekai's
+    // "Minimum Quest Rank" setting as an extra floor.
     [HarmonyPatch(typeof(GuildQuestBoardWorldComponent), "RollRank")]
     public static class Patch_GuildQuestBoard_RollRank
     {
@@ -31,18 +32,23 @@ namespace GuildQuestRankRange
             if (pawns == null || pawns.Count == 0) return true;
 
             int highest = int.MinValue;
-            int lowest = int.MaxValue;
+            long sumLevel = 0L;
+            int count = 0;
             foreach (Pawn pawn in pawns)
             {
                 int level = IsekaiComponent.GetCached(pawn)?.Level ?? 1;
                 int rank = RankIndexFromLevel(level);
                 if (rank > highest) highest = rank;
-                if (rank < lowest) lowest = rank;
+                sumLevel += level;
+                count++;
             }
 
-            if (highest == int.MinValue) return true; // safety: nothing usable
+            if (highest == int.MinValue || count == 0) return true; // safety: nothing usable
 
-            int low = Clamp(lowest - 1, MinRankIndex, MaxRankIndex);
+            // Floor on the party's AVERAGE rank, not its weakest member, so one low-level recruit can't
+            // drag the whole board down to F. Ceiling stays at the strongest colonist's rank + 1.
+            int averageRank = RankIndexFromLevel((int)(sumLevel / count));
+            int low = Clamp(averageRank, MinRankIndex, MaxRankIndex);
             int high = Clamp(highest + 1, MinRankIndex, MaxRankIndex);
 
             // Honor Isekai's "Minimum Quest Rank" floor (0 = All, so a no-op).
