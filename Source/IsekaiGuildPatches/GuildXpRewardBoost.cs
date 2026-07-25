@@ -15,8 +15,9 @@ namespace IsekaiGuildLootTweaks
     [HarmonyPatch(typeof(GuildQuestBoardWorldComponent), "RollDailyEntries")]
     public static class Patch_GuildBoard_XpRewardBoost
     {
-        // Multiplier on contract completion XP. 1.0 = vanilla Isekai amount.
-        private const float XpRewardMultiplier = 3f;
+        // Multiplier on contract completion XP. 1.0 = vanilla Isekai amount. Cranked high because general
+        // XP gain is kept at the default 3x (see improved-defaults) - guild contracts are the fast track.
+        private const float XpRewardMultiplier = 10f;
 
         private static readonly AccessTools.FieldRef<GuildQuestBoardWorldComponent, List<GuildQuestBoardEntry>> EntriesRef =
             AccessTools.FieldRefAccess<GuildQuestBoardWorldComponent, List<GuildQuestBoardEntry>>("entries");
