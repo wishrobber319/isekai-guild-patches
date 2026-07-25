@@ -62,11 +62,18 @@ namespace IsekaiGuildPatches
         }
     }
 
-    // Shared pack-size roll: ~35% lone at any rank, else a rank-scaled pack.
+    // Shared pack-size roll: S-rank and above are always a single elite target (never a pack); below that,
+    // ~35% lone, otherwise a rank-scaled pack.
     internal static class PackRules
     {
         public static int Roll(QuestRank rank)
         {
+            // S+ bounties are lone elite bosses, never packs.
+            if ((int)rank >= (int)QuestRank.S)
+            {
+                return 1;
+            }
+
             if (Rand.Chance(0.35f))
             {
                 return 1;
@@ -81,9 +88,6 @@ namespace IsekaiGuildPatches
                 case QuestRank.C: b = 3; break;
                 case QuestRank.B: b = 4; break;
                 case QuestRank.A: b = 6; break;
-                case QuestRank.S: b = 8; break;
-                case QuestRank.SS: b = 10; break;
-                case QuestRank.SSS: b = 12; break;
                 default: b = 2; break;
             }
             return Math.Max(2, Rand.RangeInclusive(b - 1, b + 1));
