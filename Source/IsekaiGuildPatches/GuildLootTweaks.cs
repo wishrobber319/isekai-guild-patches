@@ -81,22 +81,24 @@ namespace IsekaiGuildLootTweaks
                 AddThing(__result, Rand.Bool ? "Isekai_RespecOrb" : "Isekai_StarFragment", 1);
             }
 
-            // --- Healing potion (vanilla MechSerumHealer; "Healing potion" if the Medieval Fantasy
-            //     Themed Quest Rewards reskin is active), S+ only ---
-            if (r >= (int)QuestRank.S)
+            // --- Healing potion (vanilla MechSerumHealer; shows as "Healing potion" via the Medieval
+            //     Fantasy Themed Quest Rewards reskin). Chance ramps with rank, from none at F. ---
+            float healChance;
+            switch (rank)
             {
-                float healChance;
-                switch (rank)
-                {
-                    case QuestRank.S:   healChance = 0.10f; break;
-                    case QuestRank.SS:  healChance = 0.20f; break;
-                    case QuestRank.SSS: healChance = 0.30f; break;
-                    default:            healChance = 0f; break;
-                }
-                if (Rand.Chance(healChance))
-                {
-                    AddThing(__result, "MechSerumHealer", 1);
-                }
+                case QuestRank.E:   healChance = 0.05f; break;
+                case QuestRank.D:   healChance = 0.10f; break;
+                case QuestRank.C:   healChance = 0.20f; break;
+                case QuestRank.B:   healChance = 0.30f; break;
+                case QuestRank.A:   healChance = 0.40f; break;
+                case QuestRank.S:   healChance = 0.50f; break;
+                case QuestRank.SS:  healChance = 0.60f; break;
+                case QuestRank.SSS: healChance = 0.75f; break;
+                default:            healChance = 0f; break; // F (and anything unexpected)
+            }
+            if (Rand.Chance(healChance))
+            {
+                AddThing(__result, "MechSerumHealer", 1);
             }
         }
 
